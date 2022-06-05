@@ -1,0 +1,8 @@
+
+POST http://localhost:4001/api/affirmation/
+Content-Type: application/json
+
+{
+    "content": "don't forget to save!"
+    }
+
