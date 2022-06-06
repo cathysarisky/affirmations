@@ -3,6 +3,14 @@ POST http://localhost:4001/api/affirmation/
 Content-Type: application/json
 
 {
-    "content": "don't forget to save!"
+    "content": "We don't get got! We go get!"
     }
 
+###
+
+GET http://localhost:4001/api/affirmations/
+
+###
+GET http://localhost:4001/api/affirmation/629d3eee52946e521ee0b669
+###
+DELETE http://localhost:4001/api/affirmation/629d3eee52946e521ee0b669
