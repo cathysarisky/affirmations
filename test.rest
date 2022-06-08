@@ -1,0 +1,16 @@
+
+POST https://cathy.sarisky.link/api/affirmation/
+Content-Type: application/json
+
+{
+    "content": "I believe I can do it!!"
+    }
+
+###
+
+GET http://localhost:4001/api/affirmations/
+
+###
+GET http://localhost:4001/api/affirmation/629d3eee52946e521ee0b669
+###
+DELETE http://localhost:4001/api/affirmation/629d3eee52946e521ee0b669
