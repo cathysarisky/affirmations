@@ -1,22 +1,31 @@
 const express = require('express')
-//const envy = require('envy');
-//const env = envy();
-const dbpasswd = ''
+require('dotenv').config();
+const dbpassword = process.env.dbpwd
 
 const app = express()
 app.use(express.json())
+app.set('view engine', 'ejs')
+app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }))
+
+
+const PORT = 4001
+app.listen(process.env.PORT || PORT, () => {
+    console.log(`Server running on port ${PORT}`) 
+})
 
 // set up database
 const mongoose = require('mongoose')
 
 // DO NOT SAVE YOUR PASSWORD TO GITHUB!!
 const url =
-  `mongodb+srv://dblearner:${dbpasswd}@cluster0.am5d076.mongodb.net/?retryWrites=true&w=majority`
+  `mongodb+srv://dblearner:${dbpassword}@cluster0.am5d076.mongodb.net/?retryWrites=true&w=majority`
 
 mongoose.connect(url)
 
 const affirmationSchema = new mongoose.Schema({
-  content: String
+  content: String,
+  tLikes: Number
 })
 
 affirmationSchema.set('toJSON',{
@@ -31,26 +40,37 @@ const Affirmation = mongoose.model('Affirmation', affirmationSchema)
 //
 
 app.get('/', (request, response) => {
-    response.sendFile(__dirname + '/index.html')
-})
+  mongoose
+  .connect(url).then((result) => {
+    
+    Affirmation.find({}).then((affirmations) => {response.render('index.ejs', { info: affirmations })
+  }) 
+  })
+  .catch((err) => console.log(err)) 
+  })
+
+
 
 app.get('/api/affirmations', (request, response) => {
   mongoose
   .connect(url).then((result) => {
-    console.log('connected for affirmations')
-    Affirmation.find({}).then((affirmations) => {response.json(affirmations) }) 
-    .then(() => mongoose.connection.close()) })
+    
+    Affirmation.find({}).then((affirmations) => {response.render('index.ejs', { info: affirmations })
+  }) 
+    .then(() => mongoose.connection.close()) 
+  })
   .catch((err) => console.log(err)) 
   })
 
 app.get('/api/affirmation/:id' , (request, response) => {
     const affid = request.params.id
-    console.log('affid is', affid)
+    
     mongoose
     .connect(url).then((result) => {
       console.log('connected for affirmations')
       Affirmation.findById(affid).then((affirmation) => {response.json(affirmation) }) 
-      .then(() => mongoose.connection.close()) })
+
+    })
     .catch((err) => console.log(err)) 
     })
 
@@ -60,15 +80,16 @@ app.delete('/api/affirmation/:id', (request, response) => {
   mongoose
   .connect(url).then((result) => {
     console.log('connected for affirmations')
-    Affirmation.findOneAndDelete(affid).then((affirmation) => {response.json(affirmation) }) 
-    .then(() => mongoose.connection.close()) })
+    Affirmation.findByIdAndRemove({_id: affid}).then((affirmation) => {response.json(affirmation) }) 
+  //  .then(() => mongoose.connection.close()) 
+  })
   .catch((err) => console.log(err)) 
   })
 
 app.post('/api/affirmation', (request, response) => {
     const one_affirmation = request.body
-    console.log(one_affirmation)
-    response.json(one_affirmation)
+    console.log('posted: ' , one_affirmation)
+    response.redirect('/')
 
   mongoose
   .connect(url)
@@ -82,13 +103,9 @@ app.post('/api/affirmation', (request, response) => {
   })
   .then(() => {
     console.log('affirmation saved!')
-    return mongoose.connection.close()
+    //return mongoose.connection.close()
   })
   .catch((err) => console.log(err))
 })
 
-const PORT = 4001
-app.listen(process.env.PORT || PORT, () => {
-    console.log(`Server running on port ${PORT}`) 
-})
 

@@ -1,0 +1,41 @@
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">  
+    <!-- <style>.hiddenID {display: none} </style> -->
+</head>
+<body>
+    <html>
+        
+        <h2>Hello #100Devs!</h2>
+        <p>Welcome to my 'Affirmations' API.  The following commands work:</p>
+        <ul>
+            <li><a href="/api/affirmations">GET /api/affirmations</a> gets you all the affirmations in the database.
+            </li>
+            <li>GET /api/affirmation/:id gets one specific affirmation.  Here's an example: 
+                <a href="/api/affirmation/629d3eee52946e521ee0b669">/api/affirmation/629d3eee52946e521ee0b669</a> </li>
+            <li>You can also DELETE at the same endpoint. (Feel free to try it. I don't care about this data.) </li>
+            <li>POST is also implemented at /api/affirmation.  Put your affirmation text in the body.</LI>
+        </ul>
+
+        <h2>Affirmations in the database:</h2>
+
+        <ul class="affirmations">
+            <% for(let i=0; i < info.length; i++) {%>
+                <li class="affirmation">
+                    <span><%= info[i].content %></span>
+                    <span class="hiddenID"><%= info[i].id %></span>
+                <!--    <span><%= info[i].likes %></span> -->
+                <!--   <span class='fa fa-thumbs-up'></span> --> 
+                    <span class='fa fa-trash'></span>
+                </li>
+            <% } %>
+            </ul>
+    
+        <h2>Add another affirmation:</h2>
+        <form action="/api/affirmation" method="POST">
+            <input type="text" name="content">
+            <input type="submit">
+        </form>
+        <script src="main.js"></script>
+
+    </html>
+</body>

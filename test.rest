@@ -1,9 +1,9 @@
 
-POST http://localhost:4001/api/affirmation/
+POST https://cathy.sarisky.link/api/affirmation/
 Content-Type: application/json
 
 {
-    "content": "We don't get got! We go get!"
+    "content": "I believe I can do it!!"
     }
 
 ###
