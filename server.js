@@ -55,8 +55,7 @@ app.get('/api/affirmations', (request, response) => {
   mongoose
   .connect(url).then((result) => {
     
-    Affirmation.find({}).then((affirmations) => {response.render('index.ejs', { info: affirmations })
-  }) 
+    Affirmation.find({}).then((affirmations) => {response.json(affirmations) }) 
     .then(() => mongoose.connection.close()) 
   })
   .catch((err) => console.log(err)) 
