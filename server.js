@@ -68,7 +68,7 @@ app.get('/api/affirmation/:id' , (request, response) => {
     .connect(url).then((result) => {
       console.log('connected for affirmations')
       Affirmation.findById(affid).then((affirmation) => {response.json(affirmation) }) 
-
+      .then(() => mongoose.connection.close()) 
     })
     .catch((err) => console.log(err)) 
     })
